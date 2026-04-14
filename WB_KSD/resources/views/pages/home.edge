@@ -36,6 +36,17 @@
         </form>
 
       </li>
+        @if(habit.isDoneToday)
+          <span style="color: #ff4500; font-weight: bold; margin-left: 10px;">
+            🔥 Für heute geschafft!
+          </span>
+        @else
+          <form action="/habits/log/{{ habit.id }}" method="post" style="display:inline;">
+            {{ csrfField() }}
+            <button type="submit">✅ Für heute erledigt!</button>
+          </form>
+        @end
+
     @end
   </ul>
 
