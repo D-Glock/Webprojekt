@@ -9,6 +9,8 @@ export default class extends BaseSchema {
       table.integer('habit_id').references('id').inTable('habits')
       table.boolean('done').defaultTo(false)
       table.timestamps(true, true)
+      table.date('date').notNullable()
+      
     })
   }
 
