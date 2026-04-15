@@ -40,8 +40,10 @@ export class HabitSchema extends BaseModel {
 }
 
 export class TodoSchema extends BaseModel {
-  static $columns = ['createdAt', 'filePath', 'id', 'isCompleted', 'title', 'updatedAt'] as const
+  static $columns = ['category', 'createdAt', 'filePath', 'id', 'isCompleted', 'priority', 'title', 'updatedAt'] as const
   $columns = TodoSchema.$columns
+  @column()
+  declare category: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
@@ -50,6 +52,8 @@ export class TodoSchema extends BaseModel {
   declare id: number
   @column()
   declare isCompleted: boolean | null
+  @column()
+  declare priority: string | null
   @column()
   declare title: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })

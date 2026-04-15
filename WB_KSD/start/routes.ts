@@ -1,5 +1,8 @@
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
+import app from '@adonisjs/core/services/app'
+
+
 
 
 // HAUPTSEITE ANZEIGEN 
@@ -67,9 +70,31 @@ router.post('/habits/create', async ({ request, response }) => {
 
 router.post('/todos/create', async ({ request, response }) => {
   const title = request.input('title')
+  const category = request.input('category')
+  const priority = request.input('priority')
+
+  const image = request.file('image', {
+    size: '2mb',
+    extnames: ['jpg', 'png', 'jpeg']
+  })
+
+  let filePath = null
+
+  if (image) {
+    const fileName = `${new Date().getTime()}.${image.extname}`
+  
+    await image.move(app.makePath('public/uploads'), {
+      name: fileName
+    })
+    
+    filePath = `/uploads/${fileName}`
+  }
 
   await db.table('todos').insert({
     title: title,
+    category: category,
+    priority: priority,
+    file_path: filePath 
   })
 
   return response.redirect('/')
@@ -89,4 +114,48 @@ router.post('/todos/complete/:id', async ({ params, response }) => {
     is_completed: !todo.is_completed
   })
   return response.redirect('/')
+})
+
+
+
+// Einmalige Route, um die 3 festen Gewohnheiten anzulegen
+router.get('/setup-habits', async () => {
+  await db.table('habits').multiInsert([
+    { name: 'Wasser trinken', category: 'Gesundheit' },
+    { name: '20 Min. Lesen', category: 'Lernen' },
+    { name: 'Dehnen', category: 'Sport' }
+  ])
+  return 'Die 3 festen Gewohnheiten wurden erfolgreich in die Datenbank geschrieben! Du kannst diese Route jetzt wieder aus dem Code löschen.'
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =========================================================
+// NEUE SEITE: FOKUS TIMER
+// =========================================================
+router.get('/focus', async ({ view }) => {
+  return view.render('pages/focus') // Wir laden eine neue HTML-Datei
 })

@@ -7,6 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.string('title').notNullable()
+      table.string('category').nullable()
+      table.string('priority').nullable()
       table.boolean('is_completed').defaultTo(false)
       table.string('file_path').nullable()
       table.timestamps(true, true)
