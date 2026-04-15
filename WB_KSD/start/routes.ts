@@ -119,6 +119,31 @@ router.post('/todos/complete/:id', async ({ params, response }) => {
   return response.redirect('/')
 })
 
+router.get('/todos/edit/:id', async ({ params, view }) => {
+  // Wir suchen genau das To-Do aus der Datenbank, das wir angeklickt haben
+  const todo = await db.from('todos').where('id', params.id).first()
+  return view.render('pages/edit_todo', { todo: todo })
+})
+
+// 2. Die Änderungen speichern
+router.post('/todos/update/:id', async ({ params, request, response }) => {
+  // Wir überschreiben die alten Daten mit den neuen Eingaben aus dem Formular
+  await db.from('todos').where('id', params.id).update({
+    title: request.input('title'),
+    category: request.input('category'),
+    priority: request.input('priority'),
+    due_date: request.input('due_date')
+  })
+  
+  // Danach geht's automatisch zurück zum Dashboard
+  return response.redirect('/')
+})
+
+
+
+
+
+
 
 
 // Einmalige Route, um die 3 festen Gewohnheiten anzulegen

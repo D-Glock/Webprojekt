@@ -70,14 +70,15 @@
     </div>
   </form>
 
-    <ul>
+<ul>
       @each (todo in todos)
         <li style="{{ todo.is_completed ? 'opacity: 0.6;' : '' }}">
+          
           <div class="task-info">
             <strong class="{{ todo.is_completed ? 'completed-text' : '' }}">
               {{ todo.title }}
             </strong>
-            <small>{{ todo.priority }} | {{ todo.category }}</small>
+            <small>{{ todo.priority }} | {{ todo.category }} {{ todo.due_date ? '| 📅 ' + todo.due_date : '' }}</small>
 
             @if(todo.file_path)
               <div style="margin-top: 10px;">
@@ -86,7 +87,25 @@
             @end
           </div>
           
-          </li>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <form action="/todos/complete/{{ todo.id }}" method="post" style="margin: 0;">
+              {{ csrfField() }}
+              <button type="submit" class="{{ todo.is_completed ? 'btn-warning' : 'btn-success' }}">
+                {{ todo.is_completed ? '↩️' : '✅' }}
+              </button>
+            </form>
+
+            <a href="/todos/edit/{{ todo.id }}" style="text-decoration: none;">
+              <button type="button" class="btn-success" style="background: #e2e8f0; border-radius: 8px; padding: 10px;" title="Bearbeiten">✏️</button>
+            </a>
+
+            <form action="/todos/delete/{{ todo.id }}" method="post" style="margin: 0;">
+              {{ csrfField() }}
+              <button type="submit" class="btn-danger" title="Löschen">🗑️</button>
+            </form>
+          </div>
+
+        </li>
       @end
     </ul>
   </div>
