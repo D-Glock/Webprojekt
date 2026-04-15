@@ -10,7 +10,10 @@
   <div class="container">
     <h1>Mein Habit-Dashboard</h1>
 
-    <div style="text-align: right; margin-bottom: 20px;">
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px;">
+      <a href="/calendar" style="text-decoration: none;">
+        <button class="btn-success" style="background-color: #e2e8f0; color: #2d3748;">📅 Kalender</button>
+      </a>
       <a href="/focus" style="text-decoration: none;">
         <button class="btn-primary">⏱️ Zum Fokus Timer</button>
       </a>
@@ -41,28 +44,31 @@
 
 <h2>⚙️ To-Dos verwalten</h2>
     
-    <form action="/todos/create" method="post" enctype="multipart/form-data" class="input-group" style="flex-direction: column; gap: 10px;">
-      {{ csrfField() }} 
-      <input type="text" name="title" placeholder="Was ist zu tun?" required>
-      
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <select name="category" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
-          <option value="Uni">🎓 Uni</option>
-          <option value="Haushalt">🏠 Haushalt</option>
-          <option value="Freizeit">🎈 Freizeit</option>
-        </select>
+      <form action="/todos/create" method="post" enctype="multipart/form-data" class="input-group" style="flex-direction: column; gap: 10px;">
+    {{ csrfField() }} 
+    <input type="text" name="title" placeholder="Was ist zu tun?" required>
+    
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <input type="date" name="due_date" style="padding: 10px; border-radius: 8px; border: 1px solid #ddd; flex: 1;">
 
-        <select name="priority" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
-          <option value="Niedrig">🟢 Niedrig</option>
-          <option value="Mittel">🟡 Mittel</option>
-          <option value="Hoch">🔴 Hoch</option>
-        </select>
+      <select name="category" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+        <option value="Uni">🎓 Uni</option>
+        <option value="Haushalt">🏠 Haushalt</option>
+        <option value="Freizeit">🎈 Freizeit</option>
+      </select>
 
-        <input type="file" name="image" accept="image/*" style="font-size: 12px;">
-
-        <button type="submit" class="btn-primary">Hinzufügen</button>
-      </div>
-    </form>
+      <select name="priority" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+        <option value="Niedrig">🟢 Niedrig</option>
+        <option value="Mittel">🟡 Mittel</option>
+        <option value="Hoch">🔴 Hoch</option>
+      </select>
+    </div>
+    
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <input type="file" name="image" accept="image/*" style="font-size: 12px; flex: 1;">
+      <button type="submit" class="btn-primary">Hinzufügen</button>
+    </div>
+  </form>
 
     <ul>
       @each (todo in todos)

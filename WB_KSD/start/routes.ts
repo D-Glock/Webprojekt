@@ -72,6 +72,7 @@ router.post('/todos/create', async ({ request, response }) => {
   const title = request.input('title')
   const category = request.input('category')
   const priority = request.input('priority')
+  const dueDate = request.input('due_date')
 
   const image = request.file('image', {
     size: '2mb',
@@ -94,7 +95,9 @@ router.post('/todos/create', async ({ request, response }) => {
     title: title,
     category: category,
     priority: priority,
+    due_date: dueDate,
     file_path: filePath 
+    
   })
 
   return response.redirect('/')
@@ -158,4 +161,16 @@ router.get('/setup-habits', async () => {
 // =========================================================
 router.get('/focus', async ({ view }) => {
   return view.render('pages/focus') // Wir laden eine neue HTML-Datei
+})
+
+
+
+
+// =========================================================
+// NEUE SEITE: KALENDER
+// =========================================================
+
+router.get('/calendar', async ({ view }) => {
+  const todos = await db.from('todos').whereNotNull('due_date').select('*')
+  return view.render('pages/calendar', { todos: todos })
 })
