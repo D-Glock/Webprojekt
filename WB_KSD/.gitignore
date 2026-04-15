@@ -1,26 +1,12 @@
-# Dependencies and AdonisJS build
-node_modules
-build
-tmp/*
-!tmp/.gitkeep
+.settings/
+.vscode/sftp.json
+.vscode/*
+**/sftp.json
+**/.vscode     
 
-# Secrets
-.env
-.env.local
-.env.production.local
-.env.development.local
-
-# Frontend assets compiled code
-public/assets
-
-# Build tools specific
-npm-debug.log
-yarn-error.log
-
-# Editors specific
-.fleet
-.idea
-.vscode
-
-# Platform specific
-.DS_Store
+**/.DS_Store
+**/.bash_logout
+**/.bashrc
+*/.my.cnf
+**/.profile
+**/mysql-zugangsdaten.txt
