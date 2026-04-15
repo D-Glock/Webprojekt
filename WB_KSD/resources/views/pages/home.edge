@@ -1,54 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Habit Tracker - Test</title>
+  <title>Habit Tracker</title>
+  
+  @vite(['resources/css/app.css'])
 </head>
 <body>
-  <h1>Meine Gewohnheiten</h1>
+  
+  <div class="container">
+    <h1>Mein Habit-Dashboard</h1>
 
-  <form action="/habits/create" method="post">
-    {{ csrfField() }} 
+    <h2>📅 Heutige Gewohnheiten</h2>
+    <ul>
+      @each (habit in habits)
+        <li>
+          <div class="task-info">
+            <strong>{{ habit.name }}</strong>
+            <small>{{ habit.category }}</small>
+          </div>
+          
+          @if(habit.isDoneToday)
+            <span class="fire-text">🔥 Geschafft!</span>
+          @else
+            <form action="/habits/log/{{ habit.id }}" method="post" style="margin: 0;">
+              {{ csrfField() }}
+              <button type="submit" class="btn-success">✅ Erledigt</button>
+            </form>
+          @end
+        </li>
+      @end
+    </ul>
+
+    <hr style="margin: 40px 0; border: 0; border-top: 2px dashed #edf2f7;">
+
+    <h2>⚙️ To-Dos verwalten</h2>
     
-    <input type="text" name="name" placeholder="Gewohnheit, z.B. Wasser trinken" required>
-    <select name="category">
-      <option value="Gesundheit">Gesundheit</option>
-      <option value="Sport">Sport</option>
-      <option value="Lernen">Lernen</option>
-    </select>
-    <button type="submit">Speichern</button>
-  </form>
+    <form action="/todos/create" method="post" class="input-group">
+      {{ csrfField() }} 
+      <input type="text" name="title" placeholder="Neues To-Do..." required>
+      <button type="submit" class="btn-primary">Hinzufügen</button>
+    </form>
 
-  <hr>
+    <ul>
+      @each (todo in todos)
+        <li style="{{ todo.is_completed ? 'opacity: 0.6;' : '' }}">
+          
+          <div class="task-info">
+            <strong class="{{ todo.is_completed ? 'completed-text' : '' }}">
+              {{ todo.title }}
+            </strong>
+          </div>
+          
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <form action="/todos/complete/{{ todo.id }}" method="post" style="margin: 0;">
+              {{ csrfField() }}
+              <button type="submit" class="{{ todo.is_completed ? 'btn-warning' : 'btn-success' }}">
+                {{ todo.is_completed ? '↩️' : '✅' }}
+              </button>
+            </form>
 
-  <ul>
-    @each (habit in habits)
-      <li>
-        <strong>{{ habit.name }}</strong> (Kategorie: {{ habit.category }})
-        
-        <form action="/habits/delete/{{ habit.id }}" method="post" style="display:inline;">
-          {{ csrfField() }}
-          <button type="submit">Löschen</button>
-        </form>
+            <form action="/todos/delete/{{ todo.id }}" method="post" style="margin: 0;">
+              {{ csrfField() }}
+              <button type="submit" class="btn-danger" title="Löschen">🗑️</button>
+            </form>
+          </div>
 
-        <form action="/habits/log/{{ habit.id }}" method="post" style="display:inline;">
-        {{ csrfField() }}
-        <button type="submit">✅ Für heute erledigt!</button>
-        </form>
-
-      </li>
-        @if(habit.isDoneToday)
-          <span style="color: #ff4500; font-weight: bold; margin-left: 10px;">
-            🔥 Für heute geschafft!
-          </span>
-        @else
-          <form action="/habits/log/{{ habit.id }}" method="post" style="display:inline;">
-            {{ csrfField() }}
-            <button type="submit">✅ Für heute erledigt!</button>
-          </form>
-        @end
-
-    @end
-  </ul>
+        </li>
+      @end
+    </ul>
+  </div>
 
 </body>
 </html>
