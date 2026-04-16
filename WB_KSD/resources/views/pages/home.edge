@@ -78,7 +78,7 @@
             <strong class="{{ todo.is_completed ? 'completed-text' : '' }}">
               {{ todo.title }}
             </strong>
-            <small>{{ todo.priority }} | {{ todo.category }} {{ todo.due_date ? '| 📅 ' + todo.due_date : '' }}</small>
+            <small>{{ todo.priority }} | {{ todo.category }} {{ todo.due_date ? '| 🚨 ' + todo.due_date : '' }}</small>
 
             @if(todo.file_path)
               <div style="margin-top: 10px;">
