@@ -10,3 +10,5 @@
 */.my.cnf
 **/.profile
 **/mysql-zugangsdaten.txt
+
+tmp/*.sqlite3
